@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+*.log
+__pycache__/
+*.pyc
+.env
+cookies.txt
+cookies.json
+.instagram-session/
+browser-profile/
+downloads-temp/
