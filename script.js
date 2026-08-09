@@ -66,15 +66,13 @@ leadForm?.addEventListener("submit", (event) => {
 
   const formData = new FormData(leadForm);
   const name = formData.get("nome")?.toString().trim();
-  const phone = formData.get("telefone")?.toString().trim();
   const interest = formData.get("interesse")?.toString().trim();
   const message = formData.get("mensagem")?.toString().trim();
 
   const contactMessage = [
     `Olá! Vim pelo site e gostaria de agendar uma avaliação com a Dra. Maria Fernanda Mello.`,
     name ? `Nome: ${name}` : "",
-    phone ? `Meu WhatsApp: ${phone}` : "",
-    interest ? `Tenho Interesse em ${interest}` : "",
+    interest ? `Tenho interesse em ${interest}` : "",
     message ? `Mensagem: ${message}` : "",
   ]
     .filter(Boolean)
