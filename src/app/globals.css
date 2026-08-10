@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   DESIGN SYSTEM — Paleta Alaranjada Premium
+   Dra. Maria Fernanda Mello
+   ───────────────────────────────────────────── */
+
+@theme {
+  /* ── Cores Primárias (Brand Orange) ── */
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-200: #fed7aa;
+  --color-brand-300: #fdba74;
+  --color-brand-400: #fb923c;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+  --color-brand-800: #9a3412;
+  --color-brand-900: #7c2d12;
+  --color-brand-950: #431407;
+
+  /* ── Superfícies e Fundos ── */
+  --color-surface: #fdfbf9;
+  --color-surface-soft: #fef6ee;
+  --color-surface-warm: #fff8f1;
+
+  /* ── Textos ── */
+  --color-ink: #1c1917;
+  --color-ink-muted: #57534e;
+  --color-ink-faint: #a8a29e;
+
+  /* ── Escuros (Header, Footer, Seções Dark) ── */
+  --color-charcoal: #1c1917;
+  --color-charcoal-soft: #292524;
+
+  /* ── Tipografia ── */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+
+  /* ── Sombras ── */
+  --shadow-card: 0 4px 24px -4px rgba(28, 25, 23, 0.08);
+  --shadow-card-hover: 0 20px 50px -12px rgba(249, 115, 22, 0.15);
+  --shadow-float: 0 20px 60px -15px rgba(28, 25, 23, 0.25);
+
+  /* ── Espaçamentos ── */
+  --container-max: 1200px;
+  --header-height: 5rem;
+
+  /* ── Raios ── */
+  --radius-card: 1rem;
+  --radius-pill: 9999px;
+  --radius-btn: 0.75rem;
+}
+
+/* ─────────────────────────────────────────────
+   BASE STYLES
+   ───────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+}
+
+/* ─────────────────────────────────────────────
+   ANIMAÇÕES
+   ───────────────────────────────────────────── */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.8s ease-out forwards;
+}
+
+.animate-slide-up-delayed {
+  animation: slide-up 0.8s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-delayed-2 {
+  animation: slide-up 0.8s ease-out 0.4s forwards;
+  opacity: 0;
+}
+
+.animate-slide-up-delayed-3 {
+  animation: slide-up 0.8s ease-out 0.6s forwards;
+  opacity: 0;
+}
+
+/* ─────────────────────────────────────────────
+   ACESSIBILIDADE
+   ───────────────────────────────────────────── */
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -6rem;
+  z-index: 100;
+  background: var(--color-charcoal);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-btn);
+  transition: top 180ms ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ─────────────────────────────────────────────
+   SCROLLBAR CUSTOM (sutil)
+   ───────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-200);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-400);
+}
+
+/* ─────────────────────────────────────────────
+   REDUCED MOTION
+   ───────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

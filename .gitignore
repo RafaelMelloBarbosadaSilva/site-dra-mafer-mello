@@ -9,3 +9,17 @@ cookies.json
 .instagram-session/
 browser-profile/
 downloads-temp/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.vercel/
+.npm/
+.pnpm-store/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
