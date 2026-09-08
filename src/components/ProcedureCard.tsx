@@ -1,46 +1,95 @@
-import { Procedure } from "@/data/procedures";
-import { buildWhatsAppUrl } from "@/data/site-config";
+import * as React from "react";
+import Link from "next/link";
+import { ArrowRightIcon } from "lucide-react";
+import { cn } from "cn";
 
-interface ProcedureCardProps {
+import type { Procedure } from "@/data/procedures";
+import { buildWhatsAppUrl } from "@/data/site-config";
+import { WhatsAppIcon } from "@/components/icons/BrandIcons";
+import { Badge } from "@/components/ui/badge";
+
+interface ProcedureCardProps extends React.ComponentProps<"article"> {
   procedure: Procedure;
 }
 
-export default function ProcedureCard({ procedure }: ProcedureCardProps) {
+/**
+ * Card do catálogo.
+ *
+ * Mudança de comportamento em relação à versão anterior: o card
+ * inteiro passa a levar à página do procedimento (que antes não
+ * existia) e o WhatsApp vira ação secundária. O link do título é o
+ * alvo real — a área expandida usa um pseudo-elemento — para que o
+ * leitor de tela anuncie um link só, com nome descritivo, em vez de
+ * dois links concorrentes por card.
+ */
+export default function ProcedureCard({
+  procedure,
+  className,
+  ...props
+}: ProcedureCardProps) {
+  const Icon = procedure.icon;
   const whatsappUrl = buildWhatsAppUrl(procedure.whatsappMessage);
 
   return (
-    <article className="flex flex-col bg-white border border-stone-200/80 rounded-2xl p-6 hover:-translate-y-1.5 hover:shadow-xl hover:border-brand-300 transition-all duration-300 group relative">
-      <div className="flex items-center justify-between gap-2 mb-4">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-brand-50 text-brand-700 text-xs font-extrabold rounded-md uppercase tracking-wider">
-          <span>{procedure.icon}</span>
+    <article
+      className={cn(
+        "group relative flex flex-col rounded-2xl border border-border bg-card p-6",
+        "shadow-subtle transition-all duration-300 ease-[var(--ease-out-soft)]",
+        "hover:-translate-y-1 hover:border-brand-300 hover:shadow-lifted",
+        /* Move o anel de foco do link para o card inteiro */
+        "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
+        className
+      )}
+      {...props}
+    >
+      <div className="mb-4 flex items-center justify-between gap-2">
+        <Badge
+          variant="secondary"
+          className="h-7 gap-1.5 px-3 text-[0.7rem] font-extrabold tracking-wider uppercase"
+        >
+          <Icon aria-hidden="true" className="size-3.5 text-brand-700" />
           {procedure.category}
-        </span>
+        </Badge>
         {procedure.secondaryCategory && (
-          <span className="text-[10px] text-stone-400 font-bold uppercase tracking-wider">
+          <span className="text-[0.65rem] font-bold tracking-wider text-muted-foreground uppercase">
             + {procedure.secondaryCategory}
           </span>
         )}
       </div>
 
-      <h3 className="text-xl font-bold font-serif text-stone-900 mb-3 group-hover:text-brand-600 transition-colors">
-        {procedure.title}
+      <h3 className="mb-3 font-serif text-xl leading-snug font-bold text-foreground transition-colors group-hover:text-primary">
+        <Link
+          href={`/procedimentos/${procedure.slug}`}
+          className="outline-none after:absolute after:inset-0 after:content-['']"
+        >
+          {procedure.title}
+        </Link>
       </h3>
 
-      <p className="text-stone-600 text-sm leading-relaxed mb-6 flex-grow">
+      <p className="mb-6 flex-grow text-sm leading-relaxed text-muted-foreground">
         {procedure.shortDescription}
       </p>
 
-      <a
-        href={whatsappUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="mt-auto inline-flex items-center justify-between text-brand-600 font-bold text-sm hover:text-brand-700 transition-colors group/link pt-3 border-t border-stone-100"
-      >
-        <span>Saber mais no WhatsApp</span>
-        <span className="transform group-hover/link:translate-x-1 transition-transform">
-          →
+      <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
+        <span className="inline-flex items-center gap-1.5 text-sm font-bold text-primary">
+          Ver detalhes
+          <ArrowRightIcon
+            aria-hidden="true"
+            className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+          />
         </span>
-      </a>
+
+        {/* z-10 tira este link de baixo da área expandida do card */}
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Falar no WhatsApp sobre ${procedure.title}`}
+          className="relative z-10 flex size-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-primary"
+        >
+          <WhatsAppIcon className="size-5" />
+        </a>
+      </div>
     </article>
   );
 }

@@ -1,41 +1,69 @@
-import { Metadata } from "next";
+import { Suspense } from "react";
+import type { Metadata } from "next";
+import { InfoIcon } from "lucide-react";
+
 import ProceduresFilter from "@/components/ProceduresFilter";
-import { siteConfig } from "@/data/site-config";
+import { Section, SectionHeading } from "@/components/layout/Section";
+import { individualizationNotice, procedures } from "@/data/procedures";
 
 export const metadata: Metadata = {
-  title: `Procedimentos | ${siteConfig.name}`,
-  description: "Conheça todos os procedimentos faciais, corporais e capilares oferecidos pela Dra. Maria Fernanda Mello com foco em naturalidade e segurança.",
+  title: "Procedimentos",
+  description:
+    "Conheça os procedimentos faciais, corporais e capilares oferecidos pela Dra. Maria Fernanda Mello, com foco em naturalidade, planejamento individual e segurança.",
 };
+
+/** Grade estática usada enquanto o filtro (client) hidrata */
+function FilterFallback() {
+  return (
+    <div
+      className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 sm:gap-8"
+      aria-hidden="true"
+    >
+      {procedures.slice(0, 6).map((procedure) => (
+        <div
+          key={procedure.id}
+          className="h-64 animate-pulse rounded-2xl border border-border bg-muted"
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function ProceduresPage() {
   return (
-    <div className="py-16 md:py-24 bg-surface min-h-screen">
-      <div className="max-w-[var(--container-max)] mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Page Header */}
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <span className="text-brand-600 text-xs md:text-sm font-extrabold tracking-widest uppercase block mb-3">Catálogo Completo</span>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif text-stone-900 mb-6 leading-tight">
-            Nossos Procedimentos
-          </h1>
-          <p className="text-base sm:text-lg text-stone-600 leading-relaxed">
-            Tratamentos faciais, corporais e capilares planejados de forma individual para valorizar sua beleza com naturalidade e segurança.
+    <Section background="default" spacing="compact">
+      <SectionHeading
+        as="h1"
+        eyebrow="Catálogo completo"
+        title="Nossos procedimentos"
+        description="Tratamentos faciais, corporais e capilares planejados de forma individual para valorizar sua beleza com naturalidade e segurança."
+        align="center"
+        className="mb-16"
+      />
+
+      {/* ProceduresFilter lê a categoria de searchParams, então
+          precisa de uma fronteira de Suspense para a página continuar
+          pré-renderizada estaticamente. */}
+      <Suspense fallback={<FilterFallback />}>
+        <ProceduresFilter />
+      </Suspense>
+
+      <aside className="mx-auto mt-16 flex max-w-4xl flex-col items-start gap-4 rounded-2xl border border-border bg-secondary/60 p-6 sm:flex-row sm:p-8">
+        <span
+          aria-hidden="true"
+          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-card text-brand-700"
+        >
+          <InfoIcon className="size-5" />
+        </span>
+        <div>
+          <h2 className="mb-1 font-serif text-lg font-bold text-foreground">
+            Importante sobre todos os tratamentos
+          </h2>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {individualizationNotice}
           </p>
         </div>
-
-        {/* Dynamic Client Filter & Grid */}
-        <ProceduresFilter />
-
-        {/* Safety Note */}
-        <div className="mt-16 bg-brand-50/60 border border-brand-100 rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto flex flex-col sm:flex-row items-start gap-4">
-          <span className="text-2xl shrink-0 bg-brand-100 text-brand-700 w-10 h-10 rounded-full flex items-center justify-center font-bold">ℹ️</span>
-          <div>
-            <h4 className="font-bold text-stone-900 mb-1">Importante sobre todos os tratamentos</h4>
-            <p className="text-stone-600 text-sm leading-relaxed">
-              Cada tratamento depende de avaliação profissional individualizada. Indicações, número de sessões, resultados e duração variam conforme as características biológicas e objetivos de cada paciente.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+      </aside>
+    </Section>
   );
 }
