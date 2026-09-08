@@ -1,166 +1,342 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-/* ─────────────────────────────────────────────
-   DESIGN SYSTEM — Paleta Alaranjada Premium
-   Dra. Maria Fernanda Mello
-   ───────────────────────────────────────────── */
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Dra. Maria Fernanda Mello
+   Paleta "Terracota Refinada": mantém a identidade quente da
+   marca, troca o laranja saturado (#EA580C) por um terracota
+   com contraste AA e remove os gradientes de CTA.
+
+   Camadas:
+   1. Semânticas  → :root / .dark, expostas via @theme inline
+   2. Primitivas  → @theme (brand-*, gold-*, dark-*)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── 1. TOKENS SEMÂNTICOS ─────────────────────────────────
+   Contrastes verificados contra --background (#FDFAF7):
+     foreground        16.1:1   AAA
+     muted-foreground   7.8:1   AAA
+     primary            4.9:1   AA   (e branco sobre primary)
+   ───────────────────────────────────────────────────────── */
+
+:root {
+  --background: #fdfaf7;
+  --foreground: #221d1a;
+
+  --card: #ffffff;
+  --card-foreground: #221d1a;
+  --popover: #ffffff;
+  --popover-foreground: #221d1a;
+
+  /* Ação principal — terracota sólido, sem gradiente */
+  --primary: #b4551f;
+  --primary-foreground: #ffffff;
+  --primary-hover: #8f4218;
+
+  --secondary: #f6efe8;
+  --secondary-foreground: #4a3527;
+
+  --muted: #f6efe8;
+  --muted-foreground: #57504a;
+
+  /* NOTA: no shadcn, --accent é a superfície de hover de itens
+     ghost/menu — não é o acento de marca. O acento dourado da
+     marca vive em --color-gold-*, mais abaixo. */
+  --accent: #f3e9de;
+  --accent-foreground: #4a3527;
+
+  --destructive: #b3261e;
+  --destructive-foreground: #ffffff;
+
+  --border: #e8dacd;
+  --input: #e8dacd;
+  --ring: #b4551f;
+
+  --radius: 0.75rem;
+
+  /* Sidebar — exigido pelos componentes shadcn */
+  --sidebar: #fdfaf7;
+  --sidebar-foreground: #221d1a;
+  --sidebar-primary: #b4551f;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f3e9de;
+  --sidebar-accent-foreground: #4a3527;
+  --sidebar-border: #e8dacd;
+  --sidebar-ring: #b4551f;
+
+  --chart-1: #b4551f;
+  --chart-2: #a8842e;
+  --chart-3: #8f4218;
+  --chart-4: #d57f45;
+  --chart-5: #6f3413;
+}
+
+/* Sem toggle de tema por enquanto, mas os componentes shadcn
+   assumem que a classe .dark tem o esquema completo. */
+.dark {
+  --background: #1f1a17;
+  --foreground: #f6f1ec;
+
+  --card: #2a2320;
+  --card-foreground: #f6f1ec;
+  --popover: #2a2320;
+  --popover-foreground: #f6f1ec;
+
+  --primary: #e8a87c;
+  --primary-foreground: #2e1508;
+  --primary-hover: #f1cdb4;
+
+  --secondary: #332b26;
+  --secondary-foreground: #f6f1ec;
+
+  --muted: #332b26;
+  --muted-foreground: #c4b8ae;
+
+  --accent: #3b322c;
+  --accent-foreground: #f6f1ec;
+
+  --destructive: #f2b8b5;
+  --destructive-foreground: #2e1508;
+
+  --border: #ffffff1a;
+  --input: #ffffff26;
+  --ring: #e8a87c;
+
+  --sidebar: #1f1a17;
+  --sidebar-foreground: #f6f1ec;
+  --sidebar-primary: #e8a87c;
+  --sidebar-primary-foreground: #2e1508;
+  --sidebar-accent: #3b322c;
+  --sidebar-accent-foreground: #f6f1ec;
+  --sidebar-border: #ffffff1a;
+  --sidebar-ring: #e8a87c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ─── 2. PRIMITIVAS ───────────────────────────────────────── */
 
 @theme {
-  /* ── Cores Primárias (Brand Orange) ── */
-  --color-brand-50: #fff7ed;
-  --color-brand-100: #ffedd5;
-  --color-brand-200: #fed7aa;
-  --color-brand-300: #fdba74;
-  --color-brand-400: #fb923c;
-  --color-brand-500: #f97316;
-  --color-brand-600: #ea580c;
-  --color-brand-700: #c2410c;
-  --color-brand-800: #9a3412;
-  --color-brand-900: #7c2d12;
-  --color-brand-950: #431407;
+  /* Terracota — ancorada em 600 = --primary */
+  --color-brand-50: #fdf6f1;
+  --color-brand-100: #f9e8dc;
+  --color-brand-200: #f1cdb4;
+  --color-brand-300: #e8a87c;
+  --color-brand-400: #d57f45;
+  --color-brand-500: #c4661f;
+  --color-brand-600: #b4551f;
+  --color-brand-700: #8f4218;
+  --color-brand-800: #6f3413;
+  --color-brand-900: #55280f;
+  --color-brand-950: #2e1508;
 
-  /* ── Superfícies e Fundos ── */
-  --color-surface: #fdfbf9;
-  --color-surface-soft: #fef6ee;
-  --color-surface-warm: #fff8f1;
+  /* Acento dourado da marca.
+     gold        3.5:1 → só ícone, filete e texto grande
+     gold-strong 5.7:1 → liberado para texto pequeno */
+  --color-gold: #a8842e;
+  --color-gold-strong: #7e6320;
+  --color-gold-soft: #e5d6ae;
 
-  /* ── Textos ── */
-  --color-ink: #1c1917;
-  --color-ink-muted: #57534e;
-  --color-ink-faint: #a8a29e;
+  /* Seções escuras */
+  --color-surface-dark: #1f1a17;
+  --color-surface-dark-soft: #2a2320;
+  --color-on-dark: #f6f1ec;
+  --color-on-dark-muted: #c4b8ae;
+  --color-on-dark-accent: #e8a87c;
 
-  /* ── Escuros (Header, Footer, Seções Dark) ── */
-  --color-charcoal: #1c1917;
-  --color-charcoal-soft: #292524;
+  /* Tipografia — variáveis alimentadas por next/font */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
+  /* CardTitle/SheetTitle do shadcn usam font-heading */
+  --font-heading: var(--font-playfair), Georgia, "Times New Roman", serif;
 
-  /* ── Tipografia ── */
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
-
-  /* ── Sombras ── */
-  --shadow-card: 0 4px 24px -4px rgba(28, 25, 23, 0.08);
-  --shadow-card-hover: 0 20px 50px -12px rgba(249, 115, 22, 0.15);
-  --shadow-float: 0 20px 60px -15px rgba(28, 25, 23, 0.25);
-
-  /* ── Espaçamentos ── */
+  /* Layout */
   --container-max: 1200px;
   --header-height: 5rem;
 
-  /* ── Raios ── */
-  --radius-card: 1rem;
-  --radius-pill: 9999px;
-  --radius-btn: 0.75rem;
+  /* Elevação — escala única, sem sombras avulsas nos componentes */
+  --shadow-subtle: 0 1px 2px 0 rgb(34 29 26 / 0.04), 0 1px 3px 0 rgb(34 29 26 / 0.06);
+  --shadow-card: 0 4px 16px -6px rgb(34 29 26 / 0.08);
+  --shadow-lifted: 0 12px 32px -12px rgb(34 29 26 / 0.16);
+  --shadow-float: 0 18px 48px -16px rgb(34 29 26 / 0.28);
+
+  /* Curvas de motion compartilhadas com o GSAP */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* ─────────────────────────────────────────────
-   BASE STYLES
-   ───────────────────────────────────────────── */
+/* ─── 3. BASE ─────────────────────────────────────────────── */
 
-html {
-  scroll-behavior: smooth;
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Compensa o header fixo ao pular para uma âncora */
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+    font-family: var(--font-sans);
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* URLs, IDs e conteúdo colado refluem em vez de estourar */
+  :where(a, p, li, dd, td) {
+    overflow-wrap: anywhere;
+  }
+
+  /* ── Foco visível global ──
+     Antes deste redesign nenhum elemento interativo tinha
+     indicador próprio de foco. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Sobre fundos escuros o anel terracota não atinge 3:1 */
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-on-dark-accent);
+  }
+
+  ::selection {
+    background-color: var(--color-brand-200);
+    color: var(--color-brand-950);
+  }
 }
 
-body {
-  margin: 0;
-  background-color: var(--color-surface);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ─── 4. UTILITÁRIOS DE PROJETO ───────────────────────────── */
+
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
 }
 
-h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  color: var(--color-ink);
-  letter-spacing: -0.02em;
+/* Rótulo em caixa alta que abre cada seção */
+@utility eyebrow {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
-
-/* ─────────────────────────────────────────────
-   ANIMAÇÕES
-   ───────────────────────────────────────────── */
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(24px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.8s ease-out forwards;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.8s ease-out forwards;
-}
-
-.animate-slide-up-delayed {
-  animation: slide-up 0.8s ease-out 0.2s forwards;
-  opacity: 0;
-}
-
-.animate-slide-up-delayed-2 {
-  animation: slide-up 0.8s ease-out 0.4s forwards;
-  opacity: 0;
-}
-
-.animate-slide-up-delayed-3 {
-  animation: slide-up 0.8s ease-out 0.6s forwards;
-  opacity: 0;
-}
-
-/* ─────────────────────────────────────────────
-   ACESSIBILIDADE
-   ───────────────────────────────────────────── */
 
 .skip-link {
   position: fixed;
   left: 1rem;
   top: -6rem;
   z-index: 100;
-  background: var(--color-charcoal);
-  color: #fff;
+  background: var(--color-surface-dark);
+  color: var(--color-on-dark);
   padding: 0.75rem 1rem;
-  border-radius: var(--radius-btn);
-  transition: top 180ms ease;
+  border-radius: var(--radius);
+  font-weight: 600;
+  transition: top 180ms var(--ease-out-soft);
 }
 
 .skip-link:focus {
   top: 1rem;
 }
 
-/* ─────────────────────────────────────────────
-   SCROLLBAR CUSTOM (sutil)
-   ───────────────────────────────────────────── */
+/* ─── 5. SCROLLBAR ────────────────────────────────────────── */
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-surface);
+  background: var(--muted);
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--color-brand-200);
-  border-radius: 4px;
+  border-radius: 999px;
+  border: 2px solid var(--muted);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-brand-400);
+  background: var(--color-brand-300);
 }
 
-/* ─────────────────────────────────────────────
-   REDUCED MOTION
-   ───────────────────────────────────────────── */
+/* ─── 6. REDUCED MOTION ───────────────────────────────────────
+   O GSAP também trata isso via gsap.matchMedia(); esta regra
+   cobre transições CSS e qualquer animação fora do GSAP.
+   ───────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

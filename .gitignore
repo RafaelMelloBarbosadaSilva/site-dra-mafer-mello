@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # Lockfile
 package-lock.json
+
+# TypeScript incremental build
+tsconfig.tsbuildinfo

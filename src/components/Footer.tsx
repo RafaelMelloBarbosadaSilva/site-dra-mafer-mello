@@ -1,70 +1,82 @@
 import Link from "next/link";
-import { siteConfig } from "@/data/site-config";
+import { MapPinIcon } from "lucide-react";
+
+import {
+  siteConfig,
+  professionalRegistry,
+} from "@/data/site-config";
+import { InstagramIcon } from "@/components/icons/BrandIcons";
+
+const navLinks = [
+  { href: "/", label: "Início" },
+  { href: "/procedimentos", label: "Todos os procedimentos" },
+  { href: "/sobre", label: "Sobre a Dra. Maria Fernanda" },
+  { href: "/#metodo", label: "Abordagem" },
+  { href: "/#contato", label: "Agendamento e contato" },
+];
 
 export default function Footer() {
+  const registry = professionalRegistry();
+
   return (
-    <footer className="bg-stone-900 text-white py-16">
-      <div className="max-w-[var(--container-max)] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start pb-12 border-b border-stone-800">
+    /* .on-dark troca a cor do anel de foco para o acento claro */
+    <footer className="on-dark bg-surface-dark py-16 text-on-dark">
+      <div className="container-site">
+        <div className="grid grid-cols-1 items-start gap-10 border-b border-white/10 pb-12 md:grid-cols-3">
           <div>
-            <span className="font-serif text-2xl font-bold block mb-2 text-white">
+            <span className="mb-2 block font-serif text-2xl font-bold text-on-dark">
               {siteConfig.name}
             </span>
-            <p className="text-brand-300 font-medium text-sm mb-4">
+            <p className="mb-4 text-sm font-medium text-on-dark-accent">
               {siteConfig.tagline}
             </p>
-            <p className="text-stone-400 text-sm leading-relaxed max-w-sm">
+            <p className="max-w-sm text-sm leading-relaxed text-on-dark-muted">
               {siteConfig.description}
             </p>
+            {registry && (
+              <p className="mt-4 text-xs text-on-dark-muted">{registry}</p>
+            )}
           </div>
 
-          <div>
-            <h4 className="font-sans text-xs uppercase font-extrabold tracking-widest text-brand-400 mb-4">
+          <nav aria-labelledby="footer-nav-heading">
+            <h2
+              id="footer-nav-heading"
+              className="mb-4 font-sans text-xs font-extrabold tracking-widest text-on-dark-accent uppercase"
+            >
               Navegação
-            </h4>
-            <ul className="space-y-2 text-sm text-stone-300">
-              <li>
-                <Link href="/" className="hover:text-brand-400 transition-colors">
-                  Início
-                </Link>
-              </li>
-              <li>
-                <Link href="/procedimentos" className="hover:text-brand-400 transition-colors">
-                  Todos os Procedimentos
-                </Link>
-              </li>
-              <li>
-                <Link href="/#metodo" className="hover:text-brand-400 transition-colors">
-                  Abordagem
-                </Link>
-              </li>
-              <li>
-                <Link href="/#sobre" className="hover:text-brand-400 transition-colors">
-                  Sobre a Dra. Maria Fernanda
-                </Link>
-              </li>
-              <li>
-                <Link href="/#contato" className="hover:text-brand-400 transition-colors">
-                  Agendamento &amp; Contato
-                </Link>
-              </li>
+            </h2>
+            <ul className="space-y-1 text-sm">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    /* py-2 dá altura de toque confortável na lista */
+                    className="inline-flex py-2 text-on-dark-muted transition-colors hover:text-on-dark-accent"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
+          </nav>
 
           <div>
-            <h4 className="font-sans text-xs uppercase font-extrabold tracking-widest text-brand-400 mb-4">
-              Redes &amp; Atendimento
-            </h4>
-            <ul className="space-y-2 text-sm text-stone-300 mb-4">
+            <h2 className="mb-4 font-sans text-xs font-extrabold tracking-widest text-on-dark-accent uppercase">
+              Redes e atendimento
+            </h2>
+            <ul className="space-y-1 text-sm">
               <li>
                 <a
                   href={siteConfig.instagram.personal}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-brand-400 transition-colors inline-flex items-center gap-2"
+                  className="inline-flex items-center gap-2 py-2 text-on-dark-muted transition-colors hover:text-on-dark-accent"
                 >
-                  <span>Instagram Oficial:</span>
-                  <strong className="text-brand-300">{siteConfig.instagram.personalHandle}</strong>
+                  <InstagramIcon className="size-4" />
+                  <span>Instagram oficial:</span>
+                  <strong className="text-on-dark">
+                    {siteConfig.instagram.personalHandle}
+                  </strong>
                 </a>
               </li>
               <li>
@@ -72,25 +84,44 @@ export default function Footer() {
                   href={siteConfig.instagram.clinic}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-brand-400 transition-colors inline-flex items-center gap-2"
+                  className="inline-flex items-center gap-2 py-2 text-on-dark-muted transition-colors hover:text-on-dark-accent"
                 >
-                  <span>Clínica Amesse:</span>
-                  <strong className="text-brand-300">{siteConfig.instagram.clinicHandle}</strong>
+                  <InstagramIcon className="size-4" />
+                  <span>{siteConfig.clinic.name}:</span>
+                  <strong className="text-on-dark">
+                    {siteConfig.instagram.clinicHandle}
+                  </strong>
                 </a>
               </li>
-              <li className="pt-2 text-stone-400 text-xs">
-                {siteConfig.clinic.address}
+              <li>
+                <a
+                  href={siteConfig.clinic.mapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-start gap-2 py-2 text-on-dark-muted transition-colors hover:text-on-dark-accent"
+                >
+                  <MapPinIcon
+                    aria-hidden="true"
+                    className="mt-0.5 size-4 shrink-0"
+                  />
+                  {siteConfig.clinic.address}
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+        {/* Antes: text-stone-500 sobre stone-900 ≈ 3.9:1 (reprova em AA).
+            Agora: on-dark-muted sobre surface-dark = 8.9:1. */}
+        <div className="flex flex-col items-center justify-between gap-4 pt-8 text-xs text-on-dark-muted md:flex-row">
           <p>
-            © {new Date().getFullYear()} {siteConfig.name}. Todos os direitos reservados.
+            © {new Date().getFullYear()} {siteConfig.name}. Todos os direitos
+            reservados.
           </p>
           <p className="max-w-xl text-center md:text-right">
-            Conteúdo informativo. Procedimentos dependem de avaliação individual, indicação profissional e orientações éticas do conselho aplicável.
+            Conteúdo informativo. Procedimentos dependem de avaliação
+            individual, indicação profissional e orientações éticas do conselho
+            aplicável.
           </p>
         </div>
       </div>
