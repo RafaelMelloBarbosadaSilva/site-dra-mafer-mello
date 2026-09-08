@@ -34,7 +34,7 @@ export default function ProcedureCard({
     <article
       className={cn(
         "group relative flex flex-col rounded-2xl border border-border bg-card p-6",
-        "shadow-subtle transition-all duration-300 ease-[var(--ease-out-soft)]",
+        "shadow-subtle transition-[border-color,background-color,box-shadow,color,transform] duration-300 ease-[var(--ease-out-soft)]",
         "hover:-translate-y-1 hover:border-brand-300 hover:shadow-lifted",
         /* Move o anel de foco do link para o card inteiro */
         "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
