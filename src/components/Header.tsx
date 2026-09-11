@@ -107,7 +107,8 @@ export default function Header() {
                   href={link.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "rounded-lg px-4 py-2.5 text-sm font-medium transition-colors duration-200",
+                    /* min-h-11 = 44px: o py sozinho deixava os links em 40px */
+                    "flex min-h-11 items-center rounded-lg px-4 text-sm font-medium transition-colors duration-200",
                     active
                       ? "bg-accent text-brand-700"
                       : "text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -153,11 +154,17 @@ export default function Header() {
                   <SheetDescription>{siteConfig.tagline}</SheetDescription>
                 </SheetHeader>
 
+                {/*
+                  Entrada em cascata: cada item desliza da direita com
+                  um atraso crescente. Anima só `transform` via
+                  animation-delay do CSS — o item nunca fica
+                  invisível, mesmo que a animação não rode.
+                */}
                 <nav
                   className="flex flex-col gap-1 p-4"
                   aria-label="Menu principal"
                 >
-                  {navLinks.map((link) => {
+                  {navLinks.map((link, index) => {
                     const active = isActive(link.href, pathname);
                     return (
                       <SheetClose
@@ -166,9 +173,12 @@ export default function Header() {
                           <Link
                             href={link.href}
                             aria-current={active ? "page" : undefined}
+                            style={{
+                              animationDelay: `${60 + index * 45}ms`,
+                            }}
                             className={cn(
                               /* min-h-12 = 48px de alvo de toque */
-                              "flex min-h-12 items-center rounded-xl px-4 text-base font-medium transition-colors",
+                              "menu-item-cascata flex min-h-12 items-center rounded-xl px-4 text-base font-medium transition-colors",
                               active
                                 ? "bg-accent text-brand-700"
                                 : "text-foreground hover:bg-accent"

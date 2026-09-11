@@ -3,6 +3,7 @@ import Image from "next/image";
 import {
   ArrowRightIcon,
   AwardIcon,
+  CameraIcon,
   ClockIcon,
   GraduationCapIcon,
   HeartHandshakeIcon,
@@ -24,6 +25,8 @@ import { Button } from "@/components/ui/button";
 import { Faq, FaqJsonLd, type FaqItem } from "@/components/Faq";
 import { Reveal } from "@/components/motion/Reveal";
 import { HeroMotion } from "@/components/motion/HeroMotion";
+import { Counter } from "@/components/motion/Counter";
+import { MagneticCta } from "@/components/motion/MagneticCta";
 import {
   InstagramIcon,
   WhatsAppIcon,
@@ -191,15 +194,17 @@ export default function HomePage() {
                   data-hero-item
                   className="mb-16 flex flex-col gap-4 sm:flex-row"
                 >
-                  <Button
-                    render={
-                      <a href={whatsappUrl} target="_blank" rel="noreferrer" />
-                    }
-                    size="xl"
-                  >
-                    <WhatsAppIcon className="size-5" />
-                    Quero agendar uma avaliação
-                  </Button>
+                  <MagneticCta>
+                    <Button
+                      render={
+                        <a href={whatsappUrl} target="_blank" rel="noreferrer" />
+                      }
+                      size="xl"
+                    >
+                      <WhatsAppIcon className="size-5" />
+                      Quero agendar uma avaliação
+                    </Button>
+                  </MagneticCta>
                   <Button
                     render={<Link href="/procedimentos" />}
                     variant="outline-dark"
@@ -331,7 +336,9 @@ export default function HomePage() {
             className="group inline-flex min-h-11 shrink-0 items-center gap-2 py-2.5 text-sm font-bold text-primary hover:text-primary-hover sm:text-base"
           >
             {/* Derivado do dado, não mais um "16+" escrito à mão */}
-            <span>Ver todos os {procedures.length} procedimentos</span>
+            <span>
+              Ver todos os <Counter value={procedures.length} /> procedimentos
+            </span>
             <ArrowRightIcon
               aria-hidden="true"
               className="size-4 transition-transform group-hover:translate-x-1"
@@ -609,12 +616,13 @@ export default function HomePage() {
             </a>
 
             {/*
-              A grade de publicações fica pronta para quando houver
-              imagens autorizadas: `instagramPosts` está tipado e
-              vazio (docs/instagram-assets-manifest.json não tem
-              nenhum post). Enquanto isso, nada é renderizado no lugar.
+              Quando houver imagens autorizadas, a grade de
+              publicações aparece aqui — `instagramPosts` está tipado
+              e hoje vazio (docs/instagram-assets-manifest.json não
+              tem nenhum post). Até lá, o espaço reservado a ela leva
+              um convite ao perfil, em vez de ficar em branco.
             */}
-            {instagramPosts.length > 0 && (
+            {instagramPosts.length > 0 ? (
               <ul className="grid grid-cols-3 gap-3">
                 {instagramPosts.map((post) => (
                   <li key={post.id}>
@@ -635,6 +643,40 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
+            ) : (
+              <div className="flex flex-1 flex-col justify-center gap-5 rounded-2xl border border-dashed border-border bg-muted/30 p-8 text-center">
+                <span
+                  aria-hidden="true"
+                  className="mx-auto flex size-12 items-center justify-center rounded-full bg-secondary text-brand-700"
+                >
+                  <CameraIcon className="size-6" />
+                </span>
+                <div>
+                  <strong className="mb-1.5 block font-serif text-lg font-bold text-foreground">
+                    O dia a dia fica no Instagram
+                  </strong>
+                  <p className="mx-auto max-w-sm text-sm leading-relaxed text-muted-foreground">
+                    Bastidores dos atendimentos, orientações de cuidado e
+                    respostas às dúvidas que mais chegam — publicados por lá,
+                    com frequência.
+                  </p>
+                </div>
+                <Button
+                  render={
+                    <a
+                      href={siteConfig.instagram.personal}
+                      target="_blank"
+                      rel="noreferrer"
+                    />
+                  }
+                  variant="outline"
+                  size="lg"
+                  className="mx-auto"
+                >
+                  <InstagramIcon className="size-4" />
+                  Seguir {siteConfig.instagram.personalHandle}
+                </Button>
+              </div>
             )}
           </div>
 
@@ -732,14 +774,18 @@ export default function HomePage() {
               Fale diretamente conosco para agendar sua avaliação personalizada
               ou tirar dúvidas sobre qualquer procedimento.
             </p>
-            <Button
-              render={<a href={whatsappUrl} target="_blank" rel="noreferrer" />}
-              size="xl"
-              className="w-full"
-            >
-              <WhatsAppIcon className="size-5" />
-              Iniciar conversa no WhatsApp
-            </Button>
+            <MagneticCta className="w-full">
+              <Button
+                render={
+                  <a href={whatsappUrl} target="_blank" rel="noreferrer" />
+                }
+                size="xl"
+                className="w-full"
+              >
+                <WhatsAppIcon className="size-5" />
+                Iniciar conversa no WhatsApp
+              </Button>
+            </MagneticCta>
           </div>
         </div>
       </Section>

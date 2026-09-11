@@ -11,6 +11,7 @@ import {
 } from "@/data/procedures";
 import ProcedureCard from "./ProcedureCard";
 import { Flip, gsap, motionTokens, useGSAP } from "@/components/motion/gsap-setup";
+import { Counter } from "@/components/motion/Counter";
 
 type Filter = ProcedureCategory | "Todos";
 
@@ -156,7 +157,7 @@ export default function ProceduresFilter() {
                   active ? "bg-white/20" : "bg-muted text-muted-foreground"
                 )}
               >
-                {counts[filter]}
+                <Counter value={counts[filter]} />
               </span>
             </button>
           );

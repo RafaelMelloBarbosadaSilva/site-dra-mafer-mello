@@ -313,7 +313,27 @@
   top: 1rem;
 }
 
-/* ─── 5. SCROLLBAR ────────────────────────────────────────── */
+/* ─── 5. ANIMAÇÕES DE APOIO ───────────────────────────────────
+   Regra do projeto: nenhuma animação pode esconder conteúdo. Por
+   isso estas keyframes mexem só em `transform` — durante o
+   `animation-delay` o item já está visível, apenas deslocado.
+   ───────────────────────────────────────────────────────────── */
+
+@keyframes deslizar-da-direita {
+  from {
+    transform: translateX(14px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Itens do menu mobile entrando em cascata */
+.menu-item-cascata {
+  animation: deslizar-da-direita 320ms var(--ease-out-soft) backwards;
+}
+
+/* ─── 6. SCROLLBAR ────────────────────────────────────────── */
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -333,7 +353,7 @@
   background: var(--color-brand-300);
 }
 
-/* ─── 6. REDUCED MOTION ───────────────────────────────────────
+/* ─── 7. REDUCED MOTION ───────────────────────────────────────
    O GSAP também trata isso via gsap.matchMedia(); esta regra
    cobre transições CSS e qualquer animação fora do GSAP.
    ───────────────────────────────────────────────────────────── */

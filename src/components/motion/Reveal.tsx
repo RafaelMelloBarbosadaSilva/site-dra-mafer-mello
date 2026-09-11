@@ -45,9 +45,13 @@ const REDE_DE_SEGURANCA_MS = 5000;
  * 1. **Só esconde o que está abaixo da dobra.** O que já está na
  *    tela quando o componente monta nunca recebe `opacity: 0` — não
  *    há como sumir.
- * 2. **Rede de segurança por tempo.** Se em 5s o gatilho não
- *    disparou, o estado inicial é removido e o conteúdo aparece sem
- *    animação. Visível sem animação é sempre melhor que invisível.
+ * 2. **Duas redes de segurança por tempo.** Se em 5s o gatilho não
+ *    disparou, o estado inicial é removido. E depois que a animação
+ *    começa, um segundo temporizador confere o resultado no tempo em
+ *    que ela deveria ter terminado — porque um tween pode travar no
+ *    meio (aba em segundo plano, ticker suspenso, aparelho lento) e
+ *    deixar o conteúdo em opacidade parcial. Visível sem animação é
+ *    sempre melhor que invisível.
  * 3. **`clearProps` no fim.** Nenhum estilo inline sobra depois da
  *    animação, então nada pode ficar preso num valor intermediário.
  *
@@ -98,23 +102,46 @@ export function Reveal({
           }
         );
 
-        let concluido = false;
+        let disparado = false;
         let agendado = false;
+        const temporizadores: number[] = [];
 
-        const encerrar = () => {
-          concluido = true;
+        /** Força o estado final de quem ainda estiver escondido. */
+        const garantirVisibilidade = () => {
+          const escondidos = alvos.filter(
+            (alvo) => Number(getComputedStyle(alvo).opacity) < 0.9
+          );
+          if (escondidos.length) {
+            gsap.set(escondidos, { clearProps: "opacity,transform" });
+          }
+        };
+
+        const pararDeOuvir = () => {
           window.removeEventListener("scroll", aoRolar);
           window.removeEventListener("resize", verificar);
-          window.clearTimeout(rede);
         };
 
         const verificar = () => {
-          if (concluido) return;
+          if (disparado) return;
           const r = el.getBoundingClientRect();
           const entrou = r.top < window.innerHeight * 0.92 && r.bottom > 0;
           if (!entrou) return;
-          encerrar();
+          disparado = true;
+          pararDeOuvir();
           tween.play();
+
+          /* Trava 2b — o tween começou, mas pode travar no meio (aba
+             em segundo plano, ticker suspenso, dispositivo lento).
+             Passado o tempo que ele levaria para terminar, conferimos
+             e forçamos o estado final se algo ficou pelo caminho. */
+          const duracaoTotal =
+            (motionTokens.duration.base +
+              (mode === "children" ? motionTokens.stagger * alvos.length : 0)) *
+              1000 +
+            600;
+          temporizadores.push(
+            window.setTimeout(garantirVisibilidade, duracaoTotal)
+          );
         };
 
         /* Uma leitura de layout por frame, não por evento de scroll */
@@ -127,19 +154,22 @@ export function Reveal({
           });
         };
 
-        /* Trava 2 */
-        const rede = window.setTimeout(() => {
-          if (concluido) return;
-          encerrar();
-          gsap.set(alvos, { clearProps: "opacity,transform" });
-        }, REDE_DE_SEGURANCA_MS);
+        /* Trava 2a — o gatilho pode nunca disparar */
+        temporizadores.push(
+          window.setTimeout(() => {
+            if (disparado) return;
+            pararDeOuvir();
+            garantirVisibilidade();
+          }, REDE_DE_SEGURANCA_MS)
+        );
 
         window.addEventListener("scroll", aoRolar, { passive: true });
         window.addEventListener("resize", verificar);
         verificar();
 
         return () => {
-          encerrar();
+          pararDeOuvir();
+          temporizadores.forEach((id) => window.clearTimeout(id));
           tween.kill();
           gsap.set(alvos, { clearProps: "opacity,transform" });
         };
