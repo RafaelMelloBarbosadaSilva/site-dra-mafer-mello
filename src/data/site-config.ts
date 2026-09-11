@@ -71,6 +71,11 @@ export const siteConfig = {
   seo: {
     ogImage: "/assets/maria-fernanda-mello/retratos/maria-fernanda-hero.jpg",
   },
+  /** Autoria do site — distinta da titularidade do conteúdo */
+  developer: {
+    name: "Rafael Mello",
+    url: "https://github.com/RafaelMelloBarbosadaSilva",
+  },
   images: {
     hero: "/assets/maria-fernanda-mello/retratos/maria-fernanda-hero.jpg",
     portrait: "/assets/maria-fernanda-mello/retratos/maria-fernanda-sobre.jpg",

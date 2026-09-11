@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPinIcon } from "lucide-react";
+import { ArrowUpRightIcon, MapPinIcon } from "lucide-react";
 
 import {
   siteConfig,
@@ -17,6 +17,7 @@ const navLinks = [
 
 export default function Footer() {
   const registry = professionalRegistry();
+  const anoAtual = new Date().getFullYear();
 
   return (
     /* .on-dark troca a cor do anel de foco para o acento claro */
@@ -115,13 +116,37 @@ export default function Footer() {
             Agora: on-dark-muted sobre surface-dark = 8.9:1. */}
         <div className="flex flex-col items-center justify-between gap-4 pt-8 text-xs text-on-dark-muted md:flex-row">
           <p>
-            © {new Date().getFullYear()} {siteConfig.name}. Todos os direitos
-            reservados.
+            © {anoAtual} {siteConfig.name}. Todos os direitos reservados.
           </p>
           <p className="max-w-xl text-center md:text-right">
             Conteúdo informativo. Procedimentos dependem de avaliação
             individual, indicação profissional e orientações éticas do conselho
             aplicável.
+          </p>
+        </div>
+
+        {/*
+          Crédito de autoria do site, deliberadamente separado do
+          copyright acima: o conteúdo é da profissional, o design e o
+          código são de quem desenvolveu. Misturar os dois numa linha
+          só confundiria a titularidade.
+        */}
+        <div className="mt-8 border-t border-white/10 pt-6 text-center">
+          <p className="text-xs text-on-dark-muted">
+            Design e desenvolvimento por{" "}
+            <a
+              href={siteConfig.developer.url}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex items-center gap-1 font-bold text-on-dark-accent underline decoration-transparent underline-offset-4 transition-colors hover:decoration-current"
+            >
+              {siteConfig.developer.name}
+              <ArrowUpRightIcon
+                aria-hidden="true"
+                className="size-3 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>{" "}
+            · © {anoAtual}
           </p>
         </div>
       </div>
