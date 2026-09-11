@@ -249,7 +249,7 @@ export default function HomePage() {
             {pillars.map((pillar, index) => (
               <article
                 key={pillar.title}
-                className={`group rounded-2xl border border-border bg-muted/60 p-6 transition-all duration-300 ease-[var(--ease-out-soft)] hover:border-brand-300 hover:shadow-lifted ${
+                className={`group rounded-2xl border border-border bg-muted/60 p-6 transition-[border-color,background-color,box-shadow,color,transform] duration-300 ease-[var(--ease-out-soft)] hover:border-brand-300 hover:shadow-lifted ${
                   pillar.wide ? "sm:col-span-2" : ""
                 }`}
               >
@@ -288,7 +288,7 @@ export default function HomePage() {
             <Link
               key={goal.label}
               href={goal.href}
-              className="group flex flex-col justify-between rounded-2xl border border-border bg-card/80 p-6 backdrop-blur transition-all duration-300 ease-[var(--ease-out-soft)] hover:-translate-y-1.5 hover:border-brand-300 hover:bg-card hover:shadow-lifted"
+              className="group flex flex-col justify-between rounded-2xl border border-border bg-card/80 p-6 backdrop-blur transition-[border-color,background-color,box-shadow,color,transform] duration-300 ease-[var(--ease-out-soft)] hover:-translate-y-1.5 hover:border-brand-300 hover:bg-card hover:shadow-lifted"
             >
               <span className="eyebrow mb-3 text-brand-700">{goal.label}</span>
               <strong className="font-serif text-lg leading-tight text-foreground">
@@ -303,7 +303,7 @@ export default function HomePage() {
             )}
             target="_blank"
             rel="noreferrer"
-            className="group flex flex-col justify-between rounded-2xl border border-brand-300 bg-secondary p-6 transition-all duration-300 ease-[var(--ease-out-soft)] hover:-translate-y-1.5 hover:shadow-lifted"
+            className="group flex flex-col justify-between rounded-2xl border border-brand-300 bg-secondary p-6 transition-[border-color,background-color,box-shadow,color,transform] duration-300 ease-[var(--ease-out-soft)] hover:-translate-y-1.5 hover:shadow-lifted"
           >
             <span className="eyebrow mb-3 flex items-center gap-2 text-brand-700">
               <WhatsAppIcon className="size-4" />
@@ -566,7 +566,7 @@ export default function HomePage() {
               href={siteConfig.instagram.personal}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-start gap-5 rounded-2xl border border-border bg-muted/50 p-6 transition-all duration-300 hover:border-brand-300 hover:shadow-lifted"
+              className="group flex items-start gap-5 rounded-2xl border border-border bg-muted/50 p-6 transition-[border-color,background-color,box-shadow,color,transform] duration-300 hover:border-brand-300 hover:shadow-lifted"
             >
               <span
                 aria-hidden="true"
@@ -589,7 +589,7 @@ export default function HomePage() {
               href={siteConfig.instagram.clinic}
               target="_blank"
               rel="noreferrer"
-              className="group flex items-start gap-5 rounded-2xl border border-border bg-muted/50 p-6 transition-all duration-300 hover:border-brand-300 hover:shadow-lifted"
+              className="group flex items-start gap-5 rounded-2xl border border-border bg-muted/50 p-6 transition-[border-color,background-color,box-shadow,color,transform] duration-300 hover:border-brand-300 hover:shadow-lifted"
             >
               <span
                 aria-hidden="true"
