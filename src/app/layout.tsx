@@ -5,6 +5,8 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import { PageTransition } from "@/components/motion/PageTransition";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { siteConfig } from "@/data/site-config";
 
 /**
@@ -103,6 +105,7 @@ export default function RootLayout({
           Pular para o conteúdo
         </a>
         <Header />
+        <ScrollProgress />
         {/*
           pt-20  → compensa o header fixo (h-20).
           pb-28  → reserva espaço para o botão flutuante do WhatsApp,
@@ -110,7 +113,7 @@ export default function RootLayout({
                    o elemento com foco de teclado.
         */}
         <main id="conteudo" className="flex-grow pt-20 pb-28">
-          {children}
+          <PageTransition>{children}</PageTransition>
         </main>
         <Footer />
         <FloatingWhatsApp />

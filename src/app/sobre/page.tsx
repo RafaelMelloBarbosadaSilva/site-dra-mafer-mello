@@ -18,6 +18,7 @@ import {
 import { Section, SectionHeading } from "@/components/layout/Section";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/Reveal";
+import { MagneticCta } from "@/components/motion/MagneticCta";
 import { WhatsAppIcon } from "@/components/icons/BrandIcons";
 
 export const metadata: Metadata = {
@@ -304,6 +305,42 @@ export default function AboutPage() {
                 <ArrowRightIcon aria-hidden="true" className="size-4" />
               </Button>
             </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ═══ CHAMADA FINAL ═══
+          A página terminava na seção da clínica e deixava uma faixa
+          vazia até o rodapé. Fecha o percurso com a ação óbvia. */}
+      <Section background="muted" spacing="compact">
+        <div className="mx-auto max-w-3xl text-center">
+          <SectionHeading
+            eyebrow="Próximo passo"
+            title="A avaliação é onde tudo começa."
+            description="É na conversa que as queixas viram um plano — com o que é possível, o que não é, e em que ritmo. Sem compromisso de fechar nada na hora."
+            align="center"
+          />
+
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <MagneticCta>
+              <Button
+                render={
+                  <a href={whatsappUrl} target="_blank" rel="noreferrer" />
+                }
+                size="xl"
+              >
+                <WhatsAppIcon className="size-5" />
+                Agendar minha avaliação
+              </Button>
+            </MagneticCta>
+            <Button
+              render={<Link href="/procedimentos" />}
+              variant="outline"
+              size="xl"
+            >
+              Explorar os procedimentos
+              <ArrowRightIcon aria-hidden="true" className="size-4" />
+            </Button>
           </div>
         </div>
       </Section>

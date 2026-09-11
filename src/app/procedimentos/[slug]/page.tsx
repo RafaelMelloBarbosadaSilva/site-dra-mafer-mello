@@ -62,6 +62,17 @@ export default async function ProcedurePage({ params }: PageProps) {
   const related = getRelatedProcedures(procedure);
   const whatsappUrl = buildWhatsAppUrl(procedure.whatsappMessage);
 
+  /* Índice da coluna lateral — a última entrada só existe se houver FAQ */
+  const secoesDaPagina = [
+    { id: "o-que-e", label: "O que é" },
+    { id: "para-quem", label: "Para quem é indicado" },
+    { id: "como-funciona", label: "Como funciona" },
+    { id: "cuidados", label: "Cuidados depois" },
+    ...(procedure.faq.length > 0
+      ? [{ id: "duvidas", label: "Dúvidas frequentes" }]
+      : []),
+  ];
+
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -172,14 +183,14 @@ export default async function ProcedurePage({ params }: PageProps) {
       <Section background="card">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
           <div className="space-y-14">
-            <div>
+            <div id="o-que-e" className="scroll-mt-28">
               <SectionHeading eyebrow="O que é" title="Entendendo o procedimento" />
               <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-muted-foreground sm:text-lg">
                 {procedure.longDescription}
               </p>
             </div>
 
-            <div>
+            <div id="para-quem" className="scroll-mt-28">
               <SectionHeading
                 eyebrow="Para quem"
                 title="Queixas que costumam motivar a avaliação"
@@ -200,7 +211,7 @@ export default async function ProcedurePage({ params }: PageProps) {
               </Reveal>
             </div>
 
-            <div>
+            <div id="como-funciona" className="scroll-mt-28">
               <SectionHeading
                 eyebrow="Como funciona"
                 title="As etapas do atendimento"
@@ -222,7 +233,7 @@ export default async function ProcedurePage({ params }: PageProps) {
               </Reveal>
             </div>
 
-            <div>
+            <div id="cuidados" className="scroll-mt-28">
               <SectionHeading
                 eyebrow="Depois do procedimento"
                 title="Orientações gerais de cuidado"
@@ -248,7 +259,7 @@ export default async function ProcedurePage({ params }: PageProps) {
             </div>
 
             {procedure.faq.length > 0 && (
-              <div>
+              <div id="duvidas" className="scroll-mt-28">
                 <SectionHeading
                   eyebrow="Dúvidas frequentes"
                   title={`Sobre ${procedure.title.toLowerCase()}`}
@@ -258,8 +269,42 @@ export default async function ProcedurePage({ params }: PageProps) {
             )}
           </div>
 
-          {/* Aviso de individualização — fixo na coluna lateral */}
-          <aside className="lg:sticky lg:top-28 lg:self-start">
+          {/*
+            Coluna lateral fixa. Antes era só o aviso, e sobravam
+            centenas de pixels vazios até o rodapé — agora leva
+            índice, aviso e um atalho de contato.
+          */}
+          <aside className="flex flex-col gap-6 lg:sticky lg:top-28 lg:self-start">
+            <nav
+              aria-labelledby="indice-titulo"
+              className="rounded-2xl border border-border bg-muted/50 p-6"
+            >
+              <h2
+                id="indice-titulo"
+                className="eyebrow mb-4 text-gold-strong"
+              >
+                Nesta página
+              </h2>
+              <ol className="space-y-1 text-sm">
+                {secoesDaPagina.map((secao, index) => (
+                  <li key={secao.id}>
+                    <a
+                      href={`#${secao.id}`}
+                      className="group flex min-h-11 items-center gap-3 rounded-lg px-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="w-4 shrink-0 text-xs font-bold text-brand-700 tabular-nums"
+                      >
+                        {index + 1}
+                      </span>
+                      {secao.label}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+
             <div className="flex flex-col gap-4 rounded-2xl border border-gold/40 bg-gold-soft/25 p-6">
               <span
                 aria-hidden="true"
@@ -273,6 +318,26 @@ export default async function ProcedurePage({ params }: PageProps) {
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {individualizationNotice}
               </p>
+            </div>
+
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-subtle">
+              <h2 className="mb-2 font-serif text-base font-bold text-foreground">
+                Ficou alguma dúvida?
+              </h2>
+              <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+                Uma mensagem resolve o que o texto não alcança.
+              </p>
+              <Button
+                render={
+                  <a href={whatsappUrl} target="_blank" rel="noreferrer" />
+                }
+                variant="outline"
+                size="lg"
+                className="w-full"
+              >
+                <WhatsAppIcon className="size-4" />
+                Perguntar no WhatsApp
+              </Button>
             </div>
           </aside>
         </div>
